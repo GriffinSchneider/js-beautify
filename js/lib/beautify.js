@@ -952,6 +952,20 @@
                         parser_pos += 2;
                     }
                     return [sharp, 'TK_WORD'];
+                    
+                // Hacky special case for UIAutomation's '#import'
+                } else if (parser_pos < input_length) {
+                    var import_string = "import";
+                    var initial_parser_pos = parser_pos;
+                    do {
+                        c = input.charAt(parser_pos);
+                        if (c !== " ") {
+                            sharp += c;
+                        }
+                        parser_pos += 1;
+                    } while (parser_pos < input_length && c == import_string[parser_pos - initial_parser_pos - 1]);
+                    
+                    return [sharp, 'TK_WORD'];
                 }
             }
 
